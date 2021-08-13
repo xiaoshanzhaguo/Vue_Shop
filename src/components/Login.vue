@@ -74,7 +74,7 @@ export default {
         // (localStorage是持久化的存储机制，sessionStorage是会话期间的存储机制)
         //    1.1 项目中出了登录之外的其他API接口，必须在登录之后才能访问
         //    1.2 token只应当在当前网站打开期间生效，所以将token保存在sessionStorage中
-        console.log(res);
+        // console.log(res);
         // 这里调用一个api
         window.sessionStorage.setItem("token", res.data.token)
         // 2. 通过编程式导航跳转到后台主页，路由地址是/home
