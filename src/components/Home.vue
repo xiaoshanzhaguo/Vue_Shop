@@ -16,7 +16,7 @@
 				<!-- 菜单区域 -->
 				<el-menu background-color="#333744" text-color="#fff"
 				         active-text-color="#409EFF" unique-opened
-				         :collapse="isCollapse" :collapse-transition="false" router>
+				         :collapse="isCollapse" :collapse-transition="false" router :default-active="activePath">
 					<!-- 一级菜单 -->
 					<el-submenu :index="item.id + ''" v-for="item in menulist" :key="item.id">
 						<!-- 一级菜单的模板区域 -->
@@ -29,7 +29,8 @@
 
 						<!-- 二级菜单 -->
 						<!-- 提供唯一的key值 -->
-						<el-menu-item :index="'/' + subItem.path" v-for="subItem in item.children" :key="subItem.id">
+						<el-menu-item :index="'/' + subItem.path" v-for="subItem in item.children"
+						              :key="subItem.id" @click="saveNavState('/' + subItem.path)">
 							<template slot="title">
 								<!-- 图标 -->
 								<i class="el-icon-menu"></i>
@@ -63,11 +64,14 @@ export default {
 				'145': 'iconfont icon-baobiao'
 			},
 			// 是否折叠
-			isCollapse: false
+			isCollapse: false,
+			// 被激活的链接地址
+			activePath: ''
 		}
 	},
 	created() {
 		this.getMenuList()
+		this.activePath = window.sessionStorage.getItem('activePath')
 	},
 	methods: {
 		logout() {
@@ -85,6 +89,12 @@ export default {
 		// 点击按钮，切换菜单的折叠与展开
 		toggleCollapse() {
 			this.isCollapse = !this.isCollapse;
+		},
+		// 保存链接的激活状态
+		saveNavState(activePath) {
+			window.sessionStorage.setItem('activePath', activePath);
+			// 这里需要重新赋值！！！
+			this.activePath = activePath
 		}
 	}
 }
@@ -138,7 +148,7 @@ export default {
 	// 文字居中对齐
 	text-align: center;
 	// 竖线之间太近
-	letter-spacing: 2em;
+	//letter-spacing: 2em;
 	// 鼠标放上去，有小手
 	cursor: pointer;
 }
